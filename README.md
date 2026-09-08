@@ -224,3 +224,201 @@ Instance cdb26ai2 is running on node ms-ol-node-02
 [oracle@ms-ol-node-01 patches]$
 ```
 
+## 8) Proceed the same from 1 to 7 on node2 (ms-ol-node-02)
+```sql
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch version
+OPatch Version: 12.2.0.1.52
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch lspatches
+38743688;OCW RELEASE UPDATE 23.26.1.0.0 (GOLD IMAGE) (38743688) Gold Image
+38743669;Database Release Update : 23.26.1.0.0 (38743669) Gold Image
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch prereq CheckMinimumOPatchVersion -phBaseDir  /software/patches/39568945/39578879
+Oracle Interim Patch Installer version 12.2.0.1.52
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+PREREQ session
+
+Oracle Home       : /u01/app/oracle/product/26.0.0/dbhome_1
+Central Inventory : /u01/app/oraInventory
+   from           : /u01/app/oracle/product/26.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.52
+OUI version       : 12.2.0.9.0
+Log file location : /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-09-08_17-10-33PM_1.log
+
+Invoking prereq "checkminimumopatchversion"
+
+Prereq "checkMinimumOPatchVersion" passed.
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /software/patches/39568945/39578879
+Oracle Interim Patch Installer version 12.2.0.1.52
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+PREREQ session
+
+Oracle Home       : /u01/app/oracle/product/26.0.0/dbhome_1
+Central Inventory : /u01/app/oraInventory
+   from           : /u01/app/oracle/product/26.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.52
+OUI version       : 12.2.0.9.0
+Log file location : /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-09-08_17-10-54PM_1.log
+
+Invoking prereq "checkconflictagainstohwithdetail"
+
+Prereq "checkConflictAgainstOHWithDetail" passed.
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /software/patches/39568945/39578859
+Oracle Interim Patch Installer version 12.2.0.1.52
+Copyright (c) 2026, Oracle Corporation.  All rights reserved.
+
+PREREQ session
+
+Oracle Home       : /u01/app/oracle/product/26.0.0/dbhome_1
+Central Inventory : /u01/app/oraInventory
+   from           : /u01/app/oracle/product/26.0.0/dbhome_1/oraInst.loc
+OPatch version    : 12.2.0.1.52
+OUI version       : 12.2.0.9.0
+Log file location : /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatch/opatch2026-09-08_17-11-05PM_1.log
+
+Invoking prereq "checkconflictagainstohwithdetail"
+
+Prereq "checkConflictAgainstOHWithDetail" passed.
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$
+```
+### Apply patch using OPATCHAUTO On Node2
+```sql
+[root@ms-ol-node-02 install]# /u01/app/oracle/product/26.0.0/dbhome_1/OPatch/opatchauto apply /software/patches/39568945 -oh /u01/app/oracle/product/26.0.0/dbhome_1
+
+OPatchauto session is initiated at Tue Sep  8 17:13:20 2026
+
+System initialization log file is /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatchautodb/systemconfig2026-09-08_05-13-30PM.log.
+
+
+Session log file is /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatchauto/opatchauto2026-09-08_05-24-44PM.log
+The id for this session is 6ZTS
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/oracle/product/26.0.0/dbhome_1
+Patch applicability verified successfully on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Executing patch validation checks on home /u01/app/oracle/product/26.0.0/dbhome_1
+Patch validation checks successfully completed on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Enabling two-stage patches on home /u01/app/oracle/product/26.0.0/dbhome_1
+Successfully enabled two-stage patches on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Verifying SQL patch applicability on home /u01/app/oracle/product/26.0.0/dbhome_1
+SQL patch applicability verified successfully on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Preparing to bring down database service on home /u01/app/oracle/product/26.0.0/dbhome_1
+No step execution required.........
+
+
+Bringing down database service on home /u01/app/oracle/product/26.0.0/dbhome_1
+Database service successfully brought down on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Performing prepatch operation on home /u01/app/oracle/product/26.0.0/dbhome_1
+Prepatch operation completed successfully on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Start applying binary patch on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+Binary patch applied successfully on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Running rootadd_rdbms.sh on home /u01/app/oracle/product/26.0.0/dbhome_1
+Successfully executed rootadd_rdbms.sh on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Performing postpatch operation on home /u01/app/oracle/product/26.0.0/dbhome_1
+Postpatch operation completed successfully on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Starting database service on home /u01/app/oracle/product/26.0.0/dbhome_1
+Database service successfully started on home /u01/app/oracle/product/26.0.0/dbhome_1
+
+
+Preparing home /u01/app/oracle/product/26.0.0/dbhome_1 after database service restarted
+No step execution required.........
+
+
+Trying to apply SQL patch on home /u01/app/oracle/product/26.0.0/dbhome_1
+No SQL patch operations are required on local node for this home
+
+OPatchAuto successful.
+
+--------------------------------Summary--------------------------------
+
+Patching is completed successfully. Please find the summary as follows:
+
+Host:ms-ol-node-02
+RAC Home:/u01/app/oracle/product/26.0.0/dbhome_1
+Version:23.0.0.0.0
+Summary:
+
+==Following patches were SKIPPED:
+
+Patch: /software/patches/39568945/39578865
+Reason: This patch is not applicable to this specified target type - "rac_database"
+
+Patch: /software/patches/39568945/39578862
+Reason: This patch is not applicable to this specified target type - "rac_database"
+
+Patch: /software/patches/39568945/39578856
+Reason: This patch is not applicable to this specified target type - "rac_database"
+
+
+==Following patches were SUCCESSFULLY applied:
+
+Patch: /software/patches/39568945/39578859
+Log: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatchauto/core/opatch/opatch2026-09-08_17-26-39PM_1.log
+
+Patch: /software/patches/39568945/39578879
+Log: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/opatchauto/core/opatch/opatch2026-09-08_17-26-39PM_1.log
+
+
+Patching session reported following warning(s):
+_________________________________________________
+
+[WARNING] The database instance 'cdb26ai2' from '/u01/app/oracle/product/26.0.0/dbhome_1', in host'ms-ol-node-02' is not running. SQL changes, if any,  will not be applied.
+To apply. the SQL changes, bring up the database instance and run the command manually from any one node (run as oracle).
+Refer to the readme to get the correct steps for applying the sql changes.
+
+OPatchauto session completed at Tue Sep  8 17:34:33 2026
+Time taken to complete the session 21 minutes, 3 seconds
+[root@ms-ol-node-02 install]#
+```
+### Start database instance on node2 
+```sql
+[oracle@ms-ol-node-02 patches]$ srvctl start instance -d cdb26ai -i cdb26ai2
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$ ps -ef |grep pmon
+grid     1452459       1  0 11:24 ?        00:00:07 asm_pmon_+ASM2
+oracle   1684382       1  0 17:34 ?        00:00:00 ora_pmon_cdb26ai2
+oracle   1685388 1480216  0 17:35 pts/3    00:00:00 grep --color=auto pmon
+[oracle@ms-ol-node-02 patches]$
+[oracle@ms-ol-node-02 patches]$ $ORACLE_HOME/OPatch/opatch lspatches
+39578879;Database Release Update : 23.26.3.0.0 (39578879)
+39578859;OCW RELEASE UPDATE 23.26.3.0.0 (39578859)
+
+OPatch succeeded.
+[oracle@ms-ol-node-02 patches]$
+```
+

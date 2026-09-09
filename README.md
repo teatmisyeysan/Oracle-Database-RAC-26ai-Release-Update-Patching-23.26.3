@@ -1,4 +1,9 @@
 # Oracle-Database-RAC-26ai-Release-Update-Patching (23.26.3.0.0)
+This article provides a practical overview of applying Oracle Database 26ai Release Update (RU) 23.26.3.0.0 in an Oracle RAC environment.
+
+## Prerequisite
+Before starting the Oracle Database RU patching, make sure Oracle Grid Infrastructure has already been successfully patched to Release Update 23.26.3.0.0 on all RAC nodes.
+
 ## 1) Check the OPatch Version
 ```sql
 cd /soft/patches/

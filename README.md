@@ -422,3 +422,202 @@ OPatch succeeded.
 [oracle@ms-ol-node-02 patches]$
 ```
 
+## 9) Run Datapatch 
+### Run sanity check (Optional)
+```sql
+[oracle@ms-ol-node-01 ~]$ cd $ORACLE_HOME/OPatch
+[oracle@ms-ol-node-01 OPatch]$ ./datapatch -sanity_checks
+SQL Patching sanity checks version 23.26.3.0.0 on Wed 09 Sep 2026 10:34:43 AM +07
+Copyright (c) 2021, 2026, Oracle.  All rights reserved.
+
+Log file for this invocation: /u01/app/oracle/cfgtoollogs/sqlpatch/sanity_checks_20260909_103443_214227/sanity_checks_20260909_103443_214227.log
+
+RAC detected, verifying SSH connection...
+Done
+
+Warning: SSH connection between nodes failed.
+Some system checks will run only on the current node and others will be skipped.
+Refer to debug log for more details
+
+Running checks
+JSON report generated in /u01/app/oracle/cfgtoollogs/sqlpatch/sanity_checks_20260909_103443_214227/sqlpatch_sanity_checks_summary.json file
+Checks completed. Printing report:
+
+Check: Database component status - OK
+Check: PDB Violations - OK
+Check: Invalid System Objects - OK
+Check: Tablespace Status - OK
+Check: Backup jobs - OK
+Check: Temp file exists - OK
+Check: Temp file online - OK
+Check: Data Pump running - OK
+Check: Container status - OK
+Check: Oracle Database Keystore - OK
+Check: Dictionary statistics gathering - WARNING
+  Patching the database without recent data dictionary statistics gathered may lead to performance issues.
+  Data dictionary statistics are older than 7 days.
+  Run the following queries to start gathering the dictionary statistics:
+    EXEC DBMS_STATS.GATHER_DICTIONARY_STATS;
+    EXEC DBMS_SYSTEM.GATHER_FIXED_OBJECTS_STATS;
+  Refer to MOS 457926.1 for more details.
+  AI26PDB1:
+    |     LATEST      |        OPERATION        |  STATUS   |
+    |-----------------+-------------------------+-----------|
+    | 28-AUG-26 10:23 | gather_dictionary_stats | COMPLETED |
+    |-----------------+-------------------------+-----------|
+  CDB$ROOT:
+    |     LATEST      |        OPERATION        |  STATUS   |
+    |-----------------+-------------------------+-----------|
+    | 28-AUG-26 10:22 | gather_dictionary_stats | COMPLETED |
+    |-----------------+-------------------------+-----------|
+  PDB$SEED:
+    |     LATEST      |        OPERATION        |  STATUS   |
+    |-----------------+-------------------------+-----------|
+    | 28-AUG-26 10:23 | gather_dictionary_stats | COMPLETED |
+    |-----------------+-------------------------+-----------|
+Check: Scheduled Jobs - OK
+Check: GoldenGate triggers - OK
+Check: GoldenGate Integrated Extract/Replicat - OK
+Check: Logminer DDL triggers - OK
+Check: Check sys public grants - OK
+Check: Statistics gathering running - OK
+Check: Optim dictionary upgrade parameter - OK
+Check: Symlinks on oracle home path - OK
+Check: Java Virtual Machine Enable - OK
+Check: Oracle Database Vault Enabled - OK
+Check: Looping Chain Synonyms - OK
+Check: Duplicated ORACLE_HOME values - SKIPPED
+  Message: Skipped as SSH remote connection failed.
+Check: Recyclebin Empty - OK
+Check: Central Inventory - OK
+Check: Queryable Inventory locks - OK
+Check: Queryable Inventory database directories - OK
+Check: Queryable Inventory external table - OK
+Check: Queryable Inventory package - OK
+Check: Imperva processes - OK
+Check: Guardium processes - OK
+Check: Locale - OK
+
+Refer to MOS Note 2975965.1 and debug log
+/u01/app/oracle/cfgtoollogs/sqlpatch/sanity_checks_20260909_103443_214227/sanity_checks_debug_20260909_103443_214227.log
+
+SQL Patching sanity checks completed on Wed 09 Sep 2026 10:35:41 AM +07
+[oracle@ms-ol-node-01 OPatch]$
+```
+
+### Execute datapatch -verbose
+```sql
+[oracle@ms-ol-node-01 OPatch]$ cd $ORACLE_HOME/OPatch
+[oracle@ms-ol-node-01 OPatch]$
+[oracle@ms-ol-node-01 OPatch]$ ./datapatch -verbose
+SQL Patching tool version 23.26.3.0.0 Production on Wed Sep  9 10:36:44 2026
+Copyright (c) 2012, 2026, Oracle.  All rights reserved.
+
+Log file for this invocation: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/sqlpatch/sqlpatch_sid_cdb26ai1_ts_2026_09_09_10_36_44_pid_218096/sqlpatch_invocation.log
+
+Connecting to database...OK
+Gathering database info...done
+
+Note:  Datapatch will only apply or rollback SQL fixes for PDBs
+       that are in an open state, no patches will be applied to closed PDBs.
+       Please refer to Note: Datapatch: Database 12c Post Patch SQL Automation
+       (Doc ID 1585822.1)
+
+Bootstrapping registry and package to current versions...done
+Determining current state...done
+
+Current state of interim SQL patches:
+  No interim patches found
+
+Current state of release update SQL patches:
+  Binary registry:
+    23.26.3.0.0 Release_Update 260705162604: Installed
+  PDB AI26PDB1:
+    Applied 23.26.1.0.0 Release_Update 260117080636 successfully on 28-AUG-26 10.21.28.248235 AM
+  PDB CDB$ROOT:
+    Applied 23.26.1.0.0 Release_Update 260117080636 successfully on 28-AUG-26 10.21.27.878214 AM
+  PDB PDB$SEED:
+    Applied 23.26.1.0.0 Release_Update 260117080636 successfully on 28-AUG-26 10.21.28.248235 AM
+
+Adding patches to installation queue and performing prereq checks...done
+Installation queue:
+  For the following PDBs: CDB$ROOT PDB$SEED AI26PDB1
+    No interim patches need to be rolled back
+    Patch 39578879 (Database Release Update : 23.26.3.0.0 (39578879)):
+      Apply from 23.26.1.0.0 Release_Update 260117080636 to 23.26.3.0.0 Release_Update 260705162604
+    No interim patches need to be applied
+
+Installing patches...
+
+Patch installation complete.  Total patches installed: 3
+
+Validating logfiles...done
+Patch 39578879 apply (pdb CDB$ROOT): SUCCESS
+  logfile: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/sqlpatch/sqlpatch_sid_cdb26ai1_ts_2026_09_09_10_36_44_pid_218096/39578879_apply_CDB26AI_CDBROOT_2026Sep09_10_38_02.log (no errors)
+Patch 39578879 apply (pdb PDB$SEED): SUCCESS
+  logfile: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/sqlpatch/sqlpatch_sid_cdb26ai1_ts_2026_09_09_10_36_44_pid_218096/39578879_apply_CDB26AI_PDBSEED_2026Sep09_10_51_51.log (no errors)
+Patch 39578879 apply (pdb AI26PDB1): SUCCESS
+  logfile: /u01/app/oracle/product/26.0.0/dbhome_1/cfgtoollogs/sqlpatch/sqlpatch_sid_cdb26ai1_ts_2026_09_09_10_36_44_pid_218096/39578879_apply_CDB26AI_AI26PDB1_2026Sep09_10_51_50.log (no errors)
+SQL Patching tool complete on Wed Sep  9 11:02:11 2026
+[oracle@ms-ol-node-01 OPatch]$
+```
+
+## 10) Validate Patch
+### Check INVALID Objects
+```sql
+set lines 400 pages 40000
+col owner for a15
+col object_name for a35
+select owner, object_name, object_type, status from dba_objects where status='INVALID';
+```
+
+### Check dba_registry & dba_registry_sqlpatch
+```sql
+SQL> set lines 400 pages 400
+col COMP_ID for a15
+col COMP_NAME for a40
+col VERSION for a20
+col STATUS for a20
+select COMP_ID, COMP_NAME, VERSION, STATUS from dba_registry;SQL> SQL> SQL> SQL> SQL>
+
+COMP_ID         COMP_NAME                                VERSION              STATUS
+--------------- ---------------------------------------- -------------------- --------------------
+CATALOG         Oracle Database Catalog Views            23.0.0.0.0           VALID
+CATPROC         Oracle Database Packages and Types       23.0.0.0.0           VALID
+RAC             Oracle Real Application Clusters         23.0.0.0.0           VALID
+JAVAVM          JServer JAVA Virtual Machine             23.0.0.0.0           VALID
+XML             Oracle XDK                               23.0.0.0.0           VALID
+CATJAVA         Oracle Database Java Packages            23.0.0.0.0           VALID
+APS             OLAP Analytic Workspace                  23.0.0.0.0           VALID
+XDB             Oracle XML Database                      23.0.0.0.0           VALID
+OWM             Oracle Workspace Manager                 23.0.0.0.0           VALID
+CONTEXT         Oracle Text                              23.0.0.0.0           VALID
+XOQ             Oracle OLAP API                          23.0.0.0.0           VALID
+SDO             Spatial                                  23.0.0.0.0           VALID
+OLS             Oracle Label Security                    23.0.0.0.0           VALID
+DV              Oracle Database Vault                    23.0.0.0.0           VALID
+
+14 rows selected.
+
+SQL>
+```
+```sql
+SQL> set lines 500 pages 1000
+set long 2000000
+col action_time format a12
+col action format a10
+col comments format a30
+col description format a60
+col namespace format a20
+col status format a10
+select to_char(action_time, 'yyyy-mm-dd') as action_time, action, status, description, patch_id from sys.dba_registry_sqlpatch order by action_time;
+
+SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL>
+ACTION_TIME  ACTION     STATUS     DESCRIPTION                                                    PATCH_ID
+------------ ---------- ---------- ------------------------------------------------------------ ----------
+2026-08-28   APPLY      SUCCESS    Database Release Update : 23.26.1.0.0 (38743669) Gold Image    38743669
+2026-09-09   APPLY      SUCCESS    Database Release Update : 23.26.3.0.0 (39578879)               39578879
+
+SQL>
+```
+
